@@ -23,7 +23,7 @@ pipeline{
     stage('Execute maven package'){
       steps{
         echo 'package artifact'
-        sh 'mvn package'
+        sh 'mvn clean package'
       }
     }
     stage('Test artifact with sonar'){
