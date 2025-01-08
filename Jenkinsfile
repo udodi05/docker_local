@@ -12,8 +12,8 @@ pipeline{
         }
         stage('Maven Build'){
             steps{
-                echo "Building source code using Maven"
-                sh "mvn clean package"
+                echo "Building source code using Maven from Jenkins file"
+                sh "mvn flush clean package ramota"
                 // sh "mvn package"
                 echo "Building source code using Maven was successful"
             }
