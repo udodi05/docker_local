@@ -1,47 +1,41 @@
 pipeline{
-  agent any
-  tools {
-    maven 'maven3.9'
-  }
-  stages {
-    stage('Git Clone'){
-      steps{
-        git branch: 'main', url: 'https://github.com/ifediniru/docker_local.git'
-      }
+    agent any
+    tools {
+        maven 'maven3.9'
     }
-    // stage('Build containers'){
-    //   steps{
-    //     sh 'docker-compose up -d'
-    //   }
-    // }
-    // stage('Initializing container'){
-    //   steps{
-    //     sh 'echo waiting for all container services to be up'
-    //     sh 'sleep 60'
-    //   }
-    // }
-    stage('Execute maven package'){
-      steps{
-        echo 'package artifact'
-        sh 'mvn clean package'
-      }
+    stages{
+        stage('Code checkout'){
+            steps{
+                echo "checking out code"
+                git branch: 'main', url: 'https://github.com/ifediniru/docker_local.git'
+            }
+        }
+        stage('Maven Build'){
+            steps{
+                echo "Building source code using Maven"
+                sh "mvn clean package"
+                // sh "mvn package"
+                echo "Building source code using Maven was successful"
+            }
+        }
+        stage('Sonarqube Analysis'){
+            steps{
+                echo "Analysing Sourcecode"
+                // sh "mvn sonar:sonar -Dsonar.qualitygate.wait=true"
+            }
+        }
+        stage('Artifact Management'){
+            steps{
+                echo "Pushing artifacts to Nexus"
+                // sh "mvn deploy -s ./settings.xml"
+            }
+        }
+        stage('Tomcat Deploy'){
+            steps{
+                echo "Deploying Application to Tomcat"
+                // sh "rm -rf '/tmp/demojenkins'"
+                deploy adapters: [tomcat9(credentialsId: 'tomcat2', path: '', url: 'http://tomcat2:8080')], contextPath: null, war: 'target/*.war'
+            }
+        }
     }
-    stage('Test artifact with sonar'){
-      steps{
-        sh 'echo mvn sonar:sonar'
-      }
-    }
-    stage('Deploy to nexus'){
-      steps{
-        sh 'mvn deploy -s ./settings.xml'
-      }
-    }
-   stage('Tomcat'){
-     steps {
-      echo 'Pushing to Tomcat'
-        deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://172.31.36.205:8080/')], contextPath: null, war: 'target/*war'
-         echo 'Done'
-     }
-    }
-  }
 }
