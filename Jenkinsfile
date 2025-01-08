@@ -1,5 +1,5 @@
 pipeline{
-    agent any
+    agent { label 'node_aws'}
     tools {
         maven 'maven3.9'
     }
