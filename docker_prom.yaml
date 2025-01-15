@@ -5,7 +5,7 @@ yum install wget stress-ng.x86_64 -y
 cd /opt
 wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
 tar xvf node_exporter-1.0.1.linux-amd64.tar.gz
-mv node_exporter-1.0.1.linux-amd64.tar.gz node-exporter
+mv node_exporter-1.0.1.linux-amd64.tar.gz node-exporter/
 
 
 create node exporter users
@@ -41,6 +41,7 @@ WantedBy=multi-user.target
 
 sudo systemctl daemon-reload
 sudo systemctl start node_exporter
+sudo systemctl status node_exporter
 sudo systemctl enable node_exporter
 
 Test Node exporter
@@ -59,6 +60,9 @@ Grafana dashboard ID
 
 docker-compose.yml
 ==========================
+execute this first
+
+docker network create monitoring_network
 
 services:
   prometheus:
