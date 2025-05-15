@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Deploying webapp containers..."
+docker pull kniru/acadaweb:latest
 docker stop acada-webapp1 acada-webapp2 acada-webapp3 acada-webapp4 acada-webapp5 acada-webapp_collins  || true
 docker rm acada-webapp1  acada-webapp2 acada-webapp3 acada-webapp4 acada-webapp5 acada-webapp_collins  -f 
 docker network create acada-app
