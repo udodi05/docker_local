@@ -6,7 +6,7 @@ docker pull kniru/acadaweb:latest
 echo "Creating network"
 docker network create acada-app
 
-for i in {1..5}; 
+for i in {1..6}; 
 do
 docker stop acada-webapp$i ; docker rm -f acada-webapp$i || true
 docker run -d --name acada-webapp$i --hostname acada-webapp$i --network acada-app kniru/acadaweb:latest;
