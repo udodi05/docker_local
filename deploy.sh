@@ -2,17 +2,16 @@
 
 echo "Deploying webapp containers..."
 docker pull kniru/acadaweb:latest
-docker stop acada-webapp1 acada-webapp2 acada-webapp3 acada-webapp4 acada-webapp5 acada-webapp_collins  || true
-docker rm acada-webapp1  acada-webapp2 acada-webapp3 acada-webapp4 acada-webapp5 acada-webapp_collins  -f 
+
+echo "Creating network"
 docker network create acada-app
-docker run -d --name acada-webapp1 --hostname acada-webapp1 --network acada-app kniru/acadaweb:latest
-docker run -d --name acada-webapp2 --hostname acada-webapp2 --network acada-app kniru/acadaweb:latest
-docker run -d --name acada-webapp3 --hostname acada-webapp3 --network acada-app kniru/acadaweb:latest
-docker run -d --name acada-webapp4 --hostname acada-webapp4 --network acada-app kniru/acadaweb:latest
-docker run -d --name acada-webapp5 --hostname acada-webapp5 --network acada-app kniru/acadaweb:latest
-docker run -d --name acada-webapp_collins --hostname acada-webapp_collins --network acada-app kniru/acadaweb:latest
-docker ps | grep -i acada-webapp*
-echo "Deploying webapp containers done"
+
+for i in {1..5}; 
+do
+docker stop acada-webapp$i ; docker rm -f acada-webapp$i || true
+docker run -d --name acada-webapp$i --hostname acada-webapp$i --network acada-app kniru/acadaweb:latest;
+echo "Deploying webapp$i container done"
+done
 
 sleep 10
 
