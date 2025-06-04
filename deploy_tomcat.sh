@@ -2,8 +2,8 @@
 
 
 
-echo "Deploying webapp containers..."
-docker pull kniru/tomcat:latest
+# echo "Deploying webapp containers..."
+# docker pull kniru/tomcat:latest
 
 echo "Creating network"
 docker network create acada-app
@@ -11,7 +11,7 @@ docker network create acada-app
 for i in {1..6};
 do
 docker stop acada-webapp$i ; docker rm -f acada-webapp$i || true
-docker run -d -p 808$i:8080 --name acada-webapp$i --hostname acada-webapp$i --network acada-app kniru/tomcat:latest;
+docker run -d -p 808$i:8080 --name acada-webapp$i --hostname acada-webapp$i --network registry.gitlab.com/kifediniru/docker-local/acada:tomcat;
 echo "Deploying webapp$i container done"
 done
 
