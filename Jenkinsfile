@@ -1,7 +1,4 @@
 pipeline {
-    agent {
-        label 'proxmox-node'
-    }
     tools {
         maven 'maven3.9'
     }
