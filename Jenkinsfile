@@ -33,8 +33,8 @@ pipeline {
             steps{
                 sshagent(['agent_private_key']) {
                     
-                    sh 'scp load_config/haproxy.cfg deploy_tomcat.sh kniru@192.168.2.141:/opt/docker_config_files/'
-                    sh 'ssh kniru@192.168.2.141 "bash /opt/docker_config_files/deploy_tomcat.sh"'
+                    sh 'scp load_config/haproxy.cfg deploy.sh kniru@192.168.2.141:/opt/docker_config_files/'
+                    sh 'ssh kniru@192.168.2.141 "bash /opt/docker_config_files/deploy.sh"'
                 }
             }
         }
