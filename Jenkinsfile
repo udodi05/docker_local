@@ -38,15 +38,15 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Tomcat') {
-            steps{
-                deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8081')], contextPath: 'web-app', war: 'target/*.war'
-                deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8082')], contextPath: 'web-app', war: 'target/*.war'
-                deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8083')], contextPath: 'web-app', war: 'target/*.war'
-                deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8084')], contextPath: 'web-app', war: 'target/*.war'
-                deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8085')], contextPath: 'web-app', war: 'target/*.war'
-                deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8086')], contextPath: 'web-app', war: 'target/*.war'
-            }
-        }
+        // stage('Deploy to Tomcat') {
+        //     steps{
+        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8081')], contextPath: 'web-app', war: 'target/*.war'
+        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8082')], contextPath: 'web-app', war: 'target/*.war'
+        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8083')], contextPath: 'web-app', war: 'target/*.war'
+        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8084')], contextPath: 'web-app', war: 'target/*.war'
+        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8085')], contextPath: 'web-app', war: 'target/*.war'
+        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8086')], contextPath: 'web-app', war: 'target/*.war'
+        //     }
+        // }
     }
 }
