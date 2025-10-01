@@ -39,7 +39,7 @@
   <user username="admin" password="<must-be-changed>" roles="manager-gui"/>
   <user username="robot" password="<must-be-changed>" roles="manager-script"/>
 -->
-<user username="${TOMCAT_USER}" password="${TOMCAT_PASS}" roles="manager-gui,manager-script,admin-gui,manager-status"/>
+<user username="acada" password="acada123" roles="manager-gui,manager-script,admin-gui,manager-status"/>
 <!--
   The sample user and role entries below are intended for use with the
   examples web application. They are wrapped in a comment and thus are ignored
