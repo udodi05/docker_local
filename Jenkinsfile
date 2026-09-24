@@ -1,52 +1,34 @@
 pipeline {
     agent any
     tools {
-        maven 'maven3.9'
+        maven 'mvn3.9'
     }
     stages {
-        stage('Code Checkout') {
-            steps {
-                git branch: 'main', credentialsId: 'git_repo_2', url: 'https://github.com/udodi05/docker_local.git'
+        stage('Git Checkout') {
+            steps{
+                git branch: 'main', credentialsId: 'gitlab_pat', url: 'https://github.com/udodi05/docker_local.git'
             }
         }
-        stage('Package Code Artifacts') {
-            steps {
+        stage('Maven Build') {
+            steps{
                 sh 'mvn clean package'
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                sh 'whoami'
-                sh 'docker build -t kniru/tomcat:${BUILD_NUMBER} .'
-                sh 'docker tag kniru/tomcat:${BUILD_NUMBER} kniru/tomcat:latest'
-            }
-        }
-        stage('Push Image to Repo') {
+        stage('Docker Build & Push') {
             steps{
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
-                    sh 'docker push kniru/tomcat:latest'
+                sh 'docker build -t kniru/tomcat:latest .'
+                withCredentials([usernamePassword(credentialsId: 'docker_hub_cred', passwordVariable: 'DH_TOKEN', usernameVariable: 'DH_USER')]) {
+                  sh 'echo $DH_TOKEN | docker login -u $DH_USER --password-stdin'
+                  sh 'docker push kniru/tomcat:latest'
                 }
             }
         }
-        stage('Run Containers') {
+        stage('Deploy') {
             steps{
-                sshagent(['agent_private_key']) {
-                    
-                    sh 'scp load_config/haproxy.cfg deploy.sh kniru@192.168.2.141:/opt/docker_config_files/'
-                    sh 'ssh kniru@192.168.2.141 "bash /opt/docker_config_files/deploy.sh"'
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2Host', keyFileVariable: 'EC_KEY', usernameVariable: 'EC_USER')]) {
+                    sh 'ssh -i $EC_KEY -o StrictHostKeyChecking=no $EC_USER@15.223.213.46 "docker pull kniru/tomcat:latest & docker run -d -p 8080:8080 --name acada-web kniru/tomcat:latest"'
                 }
             }
         }
-        // stage('Deploy to Tomcat') {
-        //     steps{
-        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8081')], contextPath: 'web-app', war: 'target/*.war'
-        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8082')], contextPath: 'web-app', war: 'target/*.war'
-        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8083')], contextPath: 'web-app', war: 'target/*.war'
-        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8084')], contextPath: 'web-app', war: 'target/*.war'
-        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8085')], contextPath: 'web-app', war: 'target/*.war'
-        //         deploy adapters: [tomcat9(credentialsId: 'tomcat_password', path: '', url: 'http://192.168.2.141:8086')], contextPath: 'web-app', war: 'target/*.war'
-        //     }
-        // }
     }
 }
