@@ -37,5 +37,12 @@ pipeline {
                 }
             }
         }
+        stage('Store Artifact') {
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'nexus_cred', passwordVariable: 'NEXUS_PASS', usernameVariable: 'NEXUS_USER')]) {
+                    sh "mvn deploy -Drepo.login=$NEXUS_USER -Drepo.pwd=$NEXUS_PASS  -s settings.xml"
+                }
+            }
+        }
     }
 }

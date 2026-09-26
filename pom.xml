@@ -95,16 +95,17 @@
 
 	<distributionManagement>
 	    <repository>
-	      <id>acada-demo-release-repo</id>
+	      <id>acada-web-release</id>
 	      <name>ACADA Learning release Nexus Repository</name>
-	      <url>http://192.168.2.202:8081/nexus/content/repositories/acada-demo-release-repo/</url>
+	      <url>http://16.52.166.58:8081/repository/acada-release/</url>
 	    </repository>
 
 	    <snapshotRepository>
-	      <id>acada-snapshot</id>
+	      <id>acada-web-snapshot</id>
 	      <name>ACADA Learning snapshot Nexus Repository </name>
-	      <url>http://192.168.2.202:8081/nexus/content/repositories/acada-snapshot/</url>
+	      <url>http://16.52.166.58:8081/repository/acada-snapshot/</url>
 	    </snapshotRepository>
+
 	</distributionManagement>
 
 	<build>
