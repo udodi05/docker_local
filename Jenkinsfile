@@ -9,6 +9,17 @@ pipeline {
                 git branch: 'main', credentialsId: 'gitlab_pat', url: 'https://github.com/udodi05/docker_local.git'
             }
         }
+        stage('Sonar Scan') {
+            steps{
+                withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
+                sh 'mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                -Dsonar.projectKey=acada-web \
+                -Dsonar.projectName='acada-web' \
+                -Dsonar.host.url=http://35.183.105.208:9000 \
+                -Dsonar.token=${SONAR_TOKEN}'
+                }
+            }
+        }
         stage('Maven Build') {
             steps{
                 sh 'mvn clean package'
