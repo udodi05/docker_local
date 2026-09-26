@@ -12,7 +12,7 @@ pipeline {
         stage('Sonar Scan') {
             steps{
               withCredentials([string(credentialsId: 'sonar_token', variable: 'SONAR_TOKEN')]) {
-                sh 'mvn clean sonar:sonar -Dsonar.projectKey=acada-webapp -Dsonar.projectName='acada-webapp' -Dsonar.host.url=http://35.183.105.208:9000 -Dsonar.token="$SONAR_TOKEN"'
+                sh "mvn clean sonar:sonar -Dsonar.projectKey=acada-webapp -Dsonar.projectName='acada-webapp' -Dsonar.host.url=http://35.183.105.208:9000 -Dsonar.token=$SONAR_TOKEN"
                 }  
             }
         }
