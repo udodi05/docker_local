@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Deploy') {
             steps{
-                withCredentials([sshUserPrivateKey(credentialsId: 'ec2Host', keyFileVariable: 'EC_KEY', usernameVariable: 'EC_USER')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2_key', keyFileVariable: 'EC_KEY', usernameVariable: 'EC_USER')]) {
                     sh 'ssh -i $EC_KEY -o StrictHostKeyChecking=no $EC_USER@15.157.61.120 "docker rm -f acada-web || true & docker pull kniru/tomcat:latest & docker run -d -p 8080:8080 --name acada-web kniru/tomcat:latest"'
                 }
             }
